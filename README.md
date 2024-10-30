@@ -1,90 +1,99 @@
-# 🍽️ 한 끼 식단 카드 백엔드 API 설계 및 주의 사항
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+</p>
 
-## 1️⃣ 시작: 로그인
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-- **구글 OAuth 2.0 인증 처리**
+  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
+<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-  - 사용자가 구글 계정으로 로그인할 때, **OAuth 토큰 유효성 검사**가 필요합니다.
-  - **JWT**를 사용해 세션을 유지하거나 **쿠키/세션** 기반 인증을 선택합니다.
-  - 사용자 정보 저장 시 **중복 로그인 방지**를 위한 유저 ID 매핑에 주의합니다.
+## Description
 
-- **보안 고려 사항**
-  - OAuth 토큰이 만료된 경우를 대비해 **리프레시 토큰**을 구현합니다.
-  - 사용자 데이터를 다룰 때 **HTTPS** 적용 및 **CORS 설정**을 주의합니다.
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## 2️⃣ 메인 페이지: 식단 카드 캐러셀
+## Project setup
 
-- **식단 카드 데이터 로드**
+```bash
+$ npm install
+```
 
-  - **캐시 처리**를 통해 캐러셀 초기 로딩 시간을 최적화합니다.
-  - **페이징 처리**를 구현하여 데이터가 많을 때도 효율적으로 로드되도록 합니다.
+## Compile and run the project
 
-- **랜덤 선택 알고리즘**
-  - 서버에서 식단 카드를 랜덤하게 선택하는 API를 구현합니다.
-  - 동일한 카드가 반복되지 않도록 **난수 시드(seed)**를 관리합니다.
+```bash
+# development
+$ npm run start
 
-## 3️⃣ 수정 및 삭제 기능
+# watch mode
+$ npm run start:dev
 
-- **수정 및 삭제 API**
+# production mode
+$ npm run start:prod
+```
 
-  - **RESTful API** 설계에 따라 `PUT /api/cards/:id`로 수정, `DELETE /api/cards/:id`로 삭제를 처리합니다.
-  - 사용자가 본인의 카드만 수정/삭제할 수 있도록 **인증 및 권한 검사**를 수행합니다.
+## Run tests
 
-- **트랜잭션 관리**
-  - 수정 또는 삭제 시 데이터 정합성을 유지하기 위해 **트랜잭션** 처리에 주의합니다.
-  - 예: 삭제 중 오류 발생 시 모든 연산이 롤백되도록 설정합니다.
+```bash
+# unit tests
+$ npm run test
 
-## 4️⃣ 한 끼 식단 상세 페이지
+# e2e tests
+$ npm run test:e2e
 
-- **카드 상세 정보 API**
+# test coverage
+$ npm run test:cov
+```
 
-  - `GET /api/cards/:id`로 특정 카드의 상세 정보를 제공하도록 합니다.
-  - **효율적인 쿼리**를 위해 SQL에서는 **JOIN**을 최소화하거나 **NoSQL**에서는 데이터 중복 저장을 고려합니다.
+## Deployment
 
-- **모달 창 미디어 제공**
-  - 사진/영상 등 대용량 미디어 파일은 **S3와 같은 외부 스토리지**에 저장하고 **URL을 제공**하도록 설계합니다.
-  - API 응답 시간 최적화를 위해 **미디어 URL 캐싱**을 고려합니다.
+When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
 
-## 5️⃣ 카드 생성 페이지
+If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
 
-- **카드 생성 API**
+```bash
+$ npm install -g mau
+$ mau deploy
+```
 
-  - `POST /api/cards`로 새로운 식단 카드를 생성합니다.
-  - 사용자로부터 입력된 데이터는 **필드 유효성 검사**(예: 메뉴 이름, 레시피 단계) 후 저장합니다.
+With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
 
-- **파일 업로드 처리**
-  - 사진/영상을 업로드할 때 **멀티파트 폼 데이터**를 사용합니다.
-  - 파일 확장자 및 크기 제한을 통해 **보안 문제**를 예방합니다.
-  - 업로드된 파일은 S3 같은 **클라우드 스토리지**에 저장하고 URL을 반환합니다.
+## Resources
 
-## 6️⃣ 수정 및 삭제 플로우
+Check out a few resources that may come in handy when working with NestJS:
 
-- **카드 수정 API**
+- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
+- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
+- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
+- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
+- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
+- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
+- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
+- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
 
-  - 수정된 내용이 반영될 때 **기존 데이터를 덮어쓰는** 대신 변경된 부분만 업데이트합니다.
+## Support
 
-- **카드 삭제 API**
-  - 카드 삭제 시 **연관된 미디어 파일도 삭제**되도록 처리합니다.
-  - 비정상적인 삭제 요청에 대한 **롤백 처리**를 고려합니다.
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-## 💡 기타 기능
+## Stay in touch
 
-- **랜덤 뽑기 API**
+- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
 
-  - 여러 사용자가 동시에 랜덤 기능을 호출할 때 **성능 최적화**가 필요합니다.
-  - API 응답 속도를 위해 캐시나 Redis 같은 **인메모리 데이터베이스**를 사용할 수 있습니다.
+## License
 
-- **로그아웃 기능**
-  - **JWT 무효화** 또는 **세션 만료 처리**를 신경 씁니다.
-  - 로그아웃 시 서버 측 세션을 삭제하고 **리프레시 토큰도 폐기**합니다.
-
-## 📦 성능 최적화 및 모니터링
-
-- **API 응답 시간** 최적화를 위해 **데이터베이스 인덱스**를 적절히 설계합니다.
-- API 호출 시 발생할 수 있는 문제를 추적하기 위해 **로깅 및 모니터링** 도구(예: Prometheus, Grafana)를 사용합니다.
-
-## 🔐 보안 고려 사항
-
-- 모든 API는 인증된 사용자만 접근할 수 있도록 **JWT** 또는 **OAuth 2.0** 기반 인증을 사용합니다.
-- **데이터베이스 보안**을 위해 SQL 인젝션과 같은 **OWASP 취약점 방지**를 구현합니다.
-- 민감한 사용자 데이터는 **암호화**하여 저장합니다.
+Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
